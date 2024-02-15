@@ -1,0 +1,55 @@
+set markup csv on quote on
+set heading on 
+set feedback off
+set markup csv on delimiter |
+COL roles FOR a60
+COL table_name FOR a30
+col privilege for a9
+set lin 200 trims on pages 0 emb on hea on newp none
+
+  SELECT *
+    FROM (    SELECT CONNECT_BY_ROOT grantee grantee,
+                     privilege,
+                     REPLACE (
+                        REGEXP_REPLACE (SYS_CONNECT_BY_PATH (granteE, '/'),
+                                        '^/[^/]*'),
+                        '/',
+                        ' --> ')
+                        ROLES,
+                     owner,
+                     table_name,
+                     column_name
+                FROM (SELECT PRIVILEGE,
+                             GRANTEE,
+                             OWNER,
+                             TABLE_NAME,
+                             NULL column_name
+                        FROM DBA_TAB_PRIVS
+                       WHERE owner NOT IN
+                                ('SYS')
+                      UNION 
+                      SELECT PRIVILEGE,
+                             GRANTEE,
+                             OWNER,
+                             TABLE_NAME,
+                             column_name
+                        FROM DBA_COL_PRIVS
+                       WHERE owner NOT IN
+                                ('SYS')
+                      UNION 
+                      SELECT GRANTED_ROLE,
+                             GRANTEE,
+                             NULL,
+                             NULL,
+                             NULL
+                        FROM DBA_ROLE_PRIVS
+                       WHERE GRANTEE NOT IN
+                                ('SYS')) T
+          START WITH grantee IN (SELECT username FROM dba_users)
+          CONNECT BY PRIOR PRIVILEGE = GRANTEE)
+   WHERE table_name IS NOT NULL AND grantee != OWNER
+ORDER BY grantee,
+         owner,
+         table_name,
+         column_name,
+         privilege;

@@ -1,0 +1,49 @@
+Removing the DDL Environment
+======================================================
+cd /ogg_data/goldengate
+SQL>@ddl_disable
+SQL>@ddl_remove
+SQL>@marker_remove
+======================================================
+
+Stop all Oracle GoldenGate processes
+
+STOP REPLICAT *
+STOP MANAGER
+
+login to goldengate 
+ggsci
+dblogin USERID OGG_USER password oracle
+
+DELETE SCHEMATRANDATA CIS
+DELETE SCHEMATRANDATA SA
+DELETE SCHEMATRANDATA PREPREG
+
+dbms_goldengate_auth.revoke_admin_privilege('OGG_USER')
+
+=======================================================
+DELETE REPLICAT 
+
+DELETE REPLICAT RCIS
+DELETE REPLICAT RCIS2
+DELETE REPLICAT RCRM1
+DELETE REPLICAT RCRM10
+DELETE REPLICAT RCRM2
+DELETE REPLICAT RCRM3
+DELETE REPLICAT RCRM4
+DELETE REPLICAT RCRM6
+DELETE REPLICAT RCRM7
+DELETE REPLICAT RCRM9
+DELETE REPLICAT RPREP1
+DELETE REPLICAT RPREP2
+
+========================================================
+drop goldengate userid
+
+drop user OGG_USER cascade;
+
+========================================================
+DELETE GG_HOME
+
+cd /ogg_data
+rm -fr goldengate

@@ -1,0 +1,81 @@
+OWNER                          SEGMENT_NAME                           GB
+------------------------------ ------------------------------ ----------
+TKSOMSOWN                      TBAP_PRICE_PLAN                322.768921
+TKSOMSOWN                      TBORDER_ACTION                 118.499023
+TKSOMSOWN                      TBAP_ITEM                      1578.61725
+TKSOMSOWN                      TBAUTO_REQUEST                  4.7244873
+
+
+Source
+
+CREATE USER GG_ADMIN IDENTIFIED BY ggadmin#2019;
+GRANT CONNECT, RESOURCE, DBA TO GG_ADMIN;
+
+1. Check force logging
+2. Check suplemental loging
+3. Check recycle bin
+4. create tablespace for goldengate
+5. create user goldengate
+6. grant user goldengate
+
+grant create any table to OGG_USER;
+grant create any view to OGG_USER;
+grant create any procedure to OGG_USER;
+grant create any sequence to OGG_USER;
+grant create any index to OGG_USER;
+grant create any trigger to OGG_USER;
+grant create any view to OGG_USER; 
+grant connect,resource to OGG_USER;
+grant select any dictionary, select any table to OGG_USER;
+grant create table to OGG_USER;
+grant flashback any table to OGG_USER;
+grant execute on dbms_flashback to OGG_USER;
+
+7. Check parameter ENABLE_GOLDENGATE_REPLICATION
+8. run this script 
+
+
+�  @marker_setup.sql
+�  @ddl_setup.sql
+�  @role_setup.sql
+grand role ke OGG_USER
+
+GRANT GGS_GGSUSER_ROLE TO OGG_USER
+�  @ddl_enable.sql
+�  @ddl_pin.sql OGG_USER
+
+
+grand role ke OGG_USER
+
+
+GRANT GGS_GGSUSER_ROLE TO OGG_USER
+
+#######
+CREATE USER GG_ADMIN IDENTIFIED BY ggadmin#2019;
+GRANT CONNECT, RESOURCE, DBA TO GG_ADMIN;
+
+cat mgr.prm
+PORT 7821
+DYNAMICPORTLIST 7822-7835
+AUTORESTART REPLICAT *, RETRIES 5, WAITMINUTES 5, RESETMINUTES 60
+LAGREPORTMINUTES 5
+LAGCRITICALMINUTES 60
+ACCESSRULE, PROG *, IPADDR *, ALLOW
+
+
+
+dirprm
+
+REPLICAT RTKOMS1
+SETENV (ORACLE_HOME = "/u01/app/oracle/product/12.1.0.2/dbhome_1" )
+SETENV (ORACLE_SID= "OPPOM2")
+USERID GG_ADMIN password ggadmin#2019
+ASSUMETARGETDEFS
+--HANDLECOLLISIONS
+DBOPTIONS NOSUPPRESSTRIGGERS
+REPERROR (0001, DISCARD)
+REPERROR (1403, DISCARD)
+DISCARDFILE "/u01/app/acfsmounts/oggacfs/goldengate/dirdat/rtkoms.dsc", APPEND Megabytes 1000
+MAP TCSISRMAPPO.RM1_RESOURCE_ATTRIBUTES, TARGET TCSISRMAPPO.RM1_RESOURCE_ATTRIBUTES;
+
+

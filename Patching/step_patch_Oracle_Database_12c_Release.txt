@@ -1,0 +1,443 @@
+Go to primary content
+Patch 30087848 - Database Apr 2019 Release Update Revision 12.2.0.1.191015
+ 
+Oracle® Database
+Patch 30087848 - Database Apr 2019 Release Update Revision 12.2.0.1.191015
+
+This document is accurate at the time of release. For any changes and additional information regarding Database Apr 2019 Release Update Revision 12.2.0.1.191015, see these related documents that are available at My Oracle Support (http://support.oracle.com/):
+
+Document 2568307.1 Oracle Database 12.2.0.1 RU/RUR Oct 2019 Known Issues
+
+This document includes the following sections:
+
+Section 1, "Patch Information"
+
+Section 2, "Prerequisites"
+
+Section 3, "Installation"
+
+Section 4, "Deinstallation"
+
+Section 5, "Known Issues"
+
+Section 6, "References"
+
+Section 7, "Bugs Fixed by This Patch"
+
+Section 8, "Documentation Accessibility"
+
+1 Patch Information
+Database Apr 2019 Release Update Revision 12.2.0.1.191015 patches are cumulative. That is, the content of all previous Database bundles is included in the latest Database bundle patch.
+
+To install the Database Apr 2019 Release Update Revision 12.2.0.1.191015 patch, the Oracle home must have the 12.2.0.1.0 Database installed.
+
+This patch is Oracle RAC Rolling Installable.
+
+This patch is Database Vault installable. Review My Oracle Support Document 1195205.1 for details on how to apply this patch to a Database Vault environment.
+
+This patch is Data Guard Standby-First Installable. See My Oracle Support Document 1265700.1 Oracle Patch Assurance - Data Guard Standby-First Patch Apply for details on how to remove risk and reduce downtime when applying this patch.
+
+For the latest Update with Security Fixes that should be used on Client-Only installations, please refer to the Critical Patch Update (CPU) Program Patch Availability Document (PAD) section on the Oracle Database, for the cycle you are interested in.
+
+2 Prerequisites
+This section includes the following section:
+
+Section 2.1, "OPatch Utility"
+
+2.1 OPatch Utility
+You must use the OPatch utility version 12.2.0.1.17 or later to apply this patch. Oracle recommends that you use the latest released OPatch version for 12.2, which is available for download from My Oracle Support patch 6880880 by selecting the 12.2.0.1.0 release.
+
+For information about OPatch documentation, including any known issues, see My Oracle Support Document 293369.1 OPatch documentation list.
+
+3 Installation
+These instructions are for all Oracle Database installations.
+
+Section 3.1, "Patch Pre-Installation Instructions"
+
+Section 3.2, "Patch Installation Instructions"
+
+Section 3.3, "Patch Post-Installation Instructions"
+
+Section 3.4, "Patch Post-Installation Instructions for Databases Created or Upgraded after Installation of this patch in the Oracle Home"
+
+3.1 Patch Pre-Installation Instructions
+Before you install Database Apr 2019 Release Update Revision 12.2.0.1.191015, perform the following actions to check the environment and to detect and resolve any interim patch conflicts.
+
+Section 3.1.1, "Applying Database RU and the Oracle JavaVM Component 12.2.0.1.x Release Update Patch"
+
+Section 3.1.2, "Environments with Grid Infrastructure"
+
+Section 3.1.3, "Environment Checks"
+
+Section 3.1.4, "Interim Patch Conflict Detection and Resolution"
+
+3.1.1 Applying Database 12.2.0.1.x Updates/Revisions with Oracle JavaVM 12.2.0.1.x Updates
+The Oracle JavaVM 12.2.0.1.x Release Update is available as a separate patch. That separate patch has some additional requirements if it is to be installed in a "Conditional Rolling Install" fashion, as detailed in My Oracle Support Document 2217053.1. For customers who want to install both patches together during a single downtime window, follow one of the Patching Options listed in the My Oracle Support Document 1929745.1 - Oracle JavaVM Component Database PSU and RU" (OJVM PSU and OVJM RU) Patches.
+
+3.1.2 Environments with Grid Infrastructure
+This patch is not to be installed to an environment that has a Grid Infrastructure (GI) home. Please refer to the following My Oracle Support Document 756671.1 to determine the appropriate Grid Infrastructure patch to be installed.
+
+3.1.3 Environment Checks
+Ensure that the $PATH definition has the following executables: make, ar, ld, and nm.
+
+The location of these executables depends on your operating system. On many operating systems, they are located in /usr/ccs/bin, in which case you can set your PATH definition as follows:
+
+export PATH=$PATH:/usr/ccs/bin
+3.1.4 Interim Patch Conflict Detection and Resolution
+The fastest and easiest way to determine whether you have interim patches in the Oracle home that conflict with Database Apr 2019 Release Update Revision 12.2.0.1.191015, and to get the necessary conflict resolution patches, is to use the Patch Recommendations and Patch Plans features on the Patches & Updates tab in My Oracle Support. These features work in conjunction with the My Oracle Support Configuration Manager. Recorded training sessions on these features can be found in Document 603505.1.
+
+However, if you are not using My Oracle Support Patch Plans, the My Oracle Support Conflict Checker tool enables you to upload an OPatch inventory and check the patches that you want to apply to your environment for conflicts.
+
+If no conflicts are found, you can download the patches. If conflicts are found, the tool finds an existing resolution to download. If no resolution is found, it will automatically request a resolution, which you can monitor in the Plans and Patch Requests region of the Patches & Updates tab.
+
+For more information, see Knowledge Document 1091294.1, How to use the My Oracle Support Conflict Checker Tool.
+
+Or, use the following steps to manually discover conflicts and resolutions:
+
+Determine whether any currently installed interim patches conflict with the patch being installed, 30087848:
+
+unzip p30087848_122010_Linux-x86-64.zip
+cd 30087848
+opatch prereq CheckConflictAgainstOHWithDetail -ph ./
+The report indicates the patches that conflict and the patches that are a superset.
+
+Use My Oracle Support Document 1321267.1 Database Patch conflict resolution to determine, for each conflicting patch, whether a conflict resolution patch is already available, and if you need to request a new conflict resolution patch or if the conflict may be ignored.
+
+When all the interim patches that you have requested are available at My Oracle Support, proceed with Section 3.2, "Patch Installation Instructions".
+
+3.2 Patch Installation Instructions
+Follow these steps:
+
+If you are using a Data Guard Physical Standby database, you must install this patch on both the primary database and the physical standby database, as described by My Oracle Support Document 278641.1.
+
+If this is a RAC environment, install this patch using the OPatch rolling (no downtime) installation method as this patch is rolling RAC installable. Refer to My Oracle Support Document 244241.1 Rolling Patch - OPatch Support for RAC.
+
+If this is not a RAC environment, shut down all instances and listeners associated with the Oracle home that you are updating. For more information, see Oracle Database Administrator's Guide.
+
+Set your current directory to the directory where the patch is located and then run the OPatch utility by entering the following commands:
+
+unzip p30087848_<version>_<platform>.zip
+cd 30087848
+opatch apply
+If there are errors, refer to Section 5, "Known Issues".
+
+3.3 Patch Post-Installation Instructions
+After installing the patch, perform the following actions:
+
+Apply conflict resolution patches as explained in Section 3.3.1.
+
+Load modified SQL files into the database, as explained in Section 3.3.2.
+
+Upgrade Oracle Recovery Manager Catalog, as explained in Section 3.3.3.
+
+3.3.1 Apply Conflict Resolution Patches
+Apply the patch conflict resolution interim patches that were determined to be needed when you performed the steps in Section 3.1.4, "interim Patch Conflict Detection and Resolution".
+
+3.3.2 Load Modified SQL Files into the Database
+The following steps load modified SQL files into the database. For a RAC environment, perform these steps on only one node.
+
+Datapatch is run to complete the post-install SQL deployment for the patch being installed. For further details about Datapatch, including Known Issues and workarounds to common problems, see: Datapatch: Database 12c Post Patch SQL Automation (Doc ID 1585822.1).
+
+For each separate database running on the same shared Oracle home being patched, run the datapatch utility as described in Table 2.
+
+Table 2 Steps to Run the Datapatch Utility for Standalone DB Versus Single/Multitenant (CDB/PDB) DB
+
+Steps	Standalone DB	Steps	Single/Multitenant (CDB/PDB) DB
+1
+
+% sqlplus /nolog
+
+1
+
+% sqlplus /nolog
+
+2
+
+SQL> Connect / as sysdba
+
+2
+
+SQL> Connect / as sysdba
+
+3
+
+SQL> startup
+
+3
+
+SQL> startup
+
+4
+
+SQL> quit
+
+4
+
+SQL> alter pluggable database all open;Foot 1 
+
+5
+
+% cd $ORACLE_HOME/OPatch
+
+5
+
+SQL> quit
+
+6
+
+% ./datapatch -verbose
+
+6
+
+% cd $ORACLE_HOME/OPatch
+
+
+
+7
+
+% ./datapatch -verbose
+
+            Footnote 1 It is recommended the Post Install step be run on all pluggable databases; however, the following command (SQL> alter pluggable database PDB_NAME open ) could be substituted to only open certain PDBs in the single/multitenant database. Doing so will result in the Post Install step only being run on the CDB and opened PDB's. To update a pluggable database at a later date (skipped or newly plugged in), open the database using the alter pluggable database command mentioned previously and rerun the datapatch utility. See My Oracle Support Document 1935365.1  Multitenant Unplug/Plug Best Practices for more information about the procedure for unplugging/plugging with different patch releases (in both directions).
+
+The datapatch utility runs the necessary apply scripts to load the modified SQL files into the database. An entry is added to the dba_registry_sqlpatch view reflecting the patch application. In the dba_registry_sqlpatch view, verify the Status for the APPLY is "SUCCESS". For any other status, refer to the following My Oracle Support note for additional information and actions: Document 1609718.1 Datapatch Known Issues.
+
+Check the following log files in $ORACLE_BASE/cfgtoollogs/sqlpatch/30087848/<unique patch ID> for errors:
+
+30087848_apply_<database SID>_<CDB name>_<timestamp>.log
+where database SID is the database SID, CDB name is the name of the multitenant container database, and timestamp is of the form YYYYMMMDD_HH_MM_SS.
+
+For databases that have invalid objects after the execution of datapatch, run utlrp.sql to revalidate those objects.
+
+Example:
+cd $ORACLE_HOME/rdbms/admin
+sqlplus /nolog
+SQL> CONNECT / AS SYSDBA
+SQL> @utlrp.sql
+3.3.3 Upgrade Oracle Recovery Manager Catalog
+If you are using the Oracle Recovery Manager, the catalog needs to be upgraded. Enter the following command to upgrade it. The UPGRADE CATALOG command must be entered twice to confirm the upgrade.
+
+$ rman catalog username/password@alias
+RMAN> UPGRADE CATALOG;
+RMAN> UPGRADE CATALOG;
+RMAN> EXIT;
+3.4 Patch Post-Installation Instructions for Databases Created or Upgraded after Installation of this patch in the Oracle Home
+You must execute the steps in Section 3.3.2, "Loading Modified SQL Files into the Database" for any new database. There are no actions required for databases that have been upgraded.
+
+For more information, see My Oracle Support, 12.1:DBCA(Database Creation) does not execute ”datapatch (Doc ID 2084676.1).
+
+4 Deinstallation
+These instructions apply if you need to deinstall the patch.
+
+Section 4.1, "Patch Deinstallation Instructions for a Non-RAC Environment"
+
+Section 4.2, "Patch Post-Deinstallation Instructions for a Non-RAC Environment"
+
+Section 4.3, "Patch Deinstallation Instructions for Oracle RAC Environment"
+
+Section 4.4, "Patch Post-Deinstallation Instructions for Oracle RAC Environment"
+
+4.1 Patch Deinstallation Instructions for a Non-RAC Environment
+Follow these steps:
+
+Shut down all instances and listeners associated with the Oracle home that you are updating. For more information, see Oracle Database Administrator's Guide.
+
+Run the OPatch utility specifying the rollback argument as follows.
+
+opatch rollback -id 30087848
+If there are errors, refer to Section 5, "Known Issues".
+
+4.2 Patch Post-Deinstallation Instructions for a Non-RAC Environment
+After deinstalling the patch, do the following actions:
+
+Rollback SQL changes from the the Database, as explained in Section 4.2.1.
+
+Upgrade Oracle Recovery Manager Catalog, as explained in Section 4.2.2.
+
+4.2.1 Load Modified SQL Files into the Database
+Datapatch is run to complete the post-deinstall SQL deployment for the patch being deinstalled. For further details about Datapatch, including Known Issues and workarounds to common problems, see: Database 12c Post Patch SQL Automation (Doc ID 1585822.1).
+
+Follow these steps:
+
+For each separate database running on the same shared Oracle home being patched, run the datapatch utility as described in Table 3. If this is Oracle RAC, run datapatch on only one instance.
+
+Table 3 Steps to Run the datapatch Utility for Standalone DB Versus Single/Multitenant (CDB/PDB) DB
+
+Steps	Standalone DB	Steps	Single/Multitenant (CDB/PDB) DB
+1
+
+% sqlplus /nolog
+
+1
+
+% sqlplus /nolog
+
+2
+
+SQL> Connect / as sysdba
+
+2
+
+SQL> Connect / as sysdba
+
+3
+
+SQL> startup
+
+3
+
+SQL> startup
+
+4
+
+SQL> quit
+
+4
+
+SQL> alter pluggable database all open;Foot 1 
+
+5
+
+% cd $ORACLE_HOME/OPatch
+
+5
+
+SQL> quit
+
+6
+
+% ./datapatch -verbose
+
+6
+
+% cd $ORACLE_HOME/OPatch
+
+
+
+7
+
+% ./datapatch -verbose
+
+            Footnote 1 It is recommended the Post Install step be run on all pluggable databases; however, the following command (SQL> alter pluggable database PDB_NAME open ) could be substituted to only open certain PDBs in the single/multitenant database. Doing so will result in the Post Install step only being run on the CDB and opened PDB's. To update a pluggable database at a later date (skipped or newly plugged in), open the database using the alter pluggable database command mentioned previously and rerun the datapatch utility. See My Oracle Support Document 1935365.1 Multitenant Unplug/Plug Best Practices for more information about the procedure for unplugging/plugging with different patch releases (in both directions).
+
+The datapatch utility runs the necessary rollback scripts. An entry is added to the dba_registry_sqlpatch view reflecting the patch application. In the dba_registry_sqlpatch view, verify the Status for the ROLLBACK is "SUCCESS". For any other status, refer to the following My Oracle Support note for additional information and actions: Document 1609718.1 Datapatch Known Issues.
+
+Check the following log files in $ORACLE_BASE/cfgtoollogs/sqlpatch/30087848/<unique patch ID> for errors:
+
+30087848_rollback_<database SID>_<CDB name>_<timestamp>.log
+where database SID is the database SID, CDB name is the name of the multitenant container database, and timestamp is of the form YYYYMMMDD_HH_MM_SS.
+
+For databases that have invalid objects after the execution of datapatch, run utlrp.sql to revalidate those objects.
+
+Example:
+cd $ORACLE_HOME/rdbms/admin
+sqlplus /nolog
+SQL> CONNECT / AS SYSDBA
+SQL> @utlrp.sql
+4.2.2 Upgrade Oracle Recovery Manager Catalog
+If you are using the Oracle Recovery Manager, the catalog needs to be upgraded. Enter the following command to upgrade it. The UPGRADE CATALOG command must be entered twice to confirm the upgrade.
+
+$ rman catalog username/password@alias
+RMAN> UPGRADE CATALOG;
+RMAN> UPGRADE CATALOG;
+RMAN> EXIT;
+4.3 Patch Deinstallation Instructions for Oracle RAC Environment
+Patch deinstallation instructions for Oracle RAC includes these environments:
+
+Follow these steps for each node in the cluster, one node at a time.
+
+Shut down the instance on the node.
+
+Run the OPatch utility specifying the rollback argument as follows.
+
+opatch rollback -id 30087848
+If there are errors, refer to Section 5, "Known Issues".
+
+Start the instance on the node as follows:
+
+srvctl start instance
+4.4 Patch Post-Deinstallation Instructions for Oracle RAC Environment
+Follow the instructions listed in Section Section 4.2, "Patch Post-Deinstallation Instructions for a Non-RAC Environment" only on the node for which the steps in Section 3.3.2, "Loading Modified SQL Files into the Database" were executed during the patch application.
+
+All other instances can be started and accessed as usual while you are executing the deinstallation steps.
+
+5 Known Issues
+For information about OPatch issues, see My Oracle Support Document 293369.1 OPatch documentation list.
+
+For issues documented after the release of this patch, see My Oracle Support Document 2568307.1 Oracle Database 12.2.0.1 RU/RUR Oct 2019 Known Issues
+
+Other known issues are as follows.
+
+Issue 1   
+The following ignorable errors may be encountered while running the datapatch/catbundle.sql script or its rollback script:
+
+ORA-00942: table or view does not exist
+ORA-00955: name is already used by an existing object
+ORA-01430: column being added already exists in table
+ORA-01432: public synonym to be dropped does not exist
+ORA-01434: private synonym to be dropped does not exist
+ORA-01435: user does not exist
+ORA-01917: user or role 'XDB' does not exist
+ORA-01920: user name '<user-name>' conflicts with another user or role name
+ORA-01921: role name '<role name>' conflicts with another user or role name
+ORA-01927: cannot REVOKE privileges you did not grant
+ORA-01952: system privileges not granted to 'WKSYS'
+ORA-02289: sequence does not exist 
+ORA-02303: cannot drop or replace a type with type or table dependents
+ORA-02443: Cannot drop constraint - nonexistent constraint
+ORA-04043: object <object-name> does not exist
+ORA-06512: at line <line number>. If this error follow any of above errors, then can be safely ignored.
+ORA-14452: attempt to create, alter or drop an index on temporary table already in use
+ORA-29809: cannot drop an operator with dependent objects
+ORA-29830: operator does not exist
+ORA-29832: cannot drop or replace an indextype with dependent indexes
+ORA-29844: duplicate operator name specified 
+ORA-29931: specified association does not exist
+6 References
+The following documents are references for this patch.
+
+Document 756671.1 Master Note for Database Proactive Patch Program
+
+Document 1585822.1 Database 12c Post Patch SQL Automation
+
+Document 293369.1 OPatch documentation list
+
+Document 360870.1 Impact of Java Security Vulnerabilities on Oracle Products
+
+Document 1321267.1 Database Patch conflict resolution
+
+Document 30087848.8 Database Apr 2019 Release Update Revision 12.2.0.1.191015
+
+Document 2245178.1 Database 12.2.0.1 Release Updates and Revisions Bugs Fixed Lists
+Document 1561792.2 Troubleshooting Assistant: Patching Oracle Database/Client
+
+7 Bugs Fixed by This Patch
+See My Oracle Support Document 2245178.1 for the list of bugs fixed in this patch.
+
+8 Documentation Accessibility
+For information about Oracle's commitment to accessibility, visit the Oracle Accessibility Program website at http://www.oracle.com/us/corporate/accessibility/index.html.
+
+Access to Oracle Support
+
+Oracle customers have access to electronic support through My Oracle Support. For information, visit http://www.oracle.com/support/contact.html or visit http://www.oracle.com/us/corporate/accessibility/support/index.html if you are hearing impaired.
+
+Patch 30087848 - Database Apr 2019 Release Update Revision 12.2.0.1.191015
+
+Copyright © 2019, Oracle and/or its affiliates. All rights reserved.
+
+This software and related documentation are provided under a license agreement containing restrictions on use and disclosure and are protected by intellectual property laws. Except as expressly permitted in your license agreement or allowed by law, you may not use, copy, reproduce, translate, broadcast, modify, license, transmit, distribute, exhibit, perform, publish, or display any part, in any form, or by any means. Reverse engineering, disassembly, or decompilation of this software, unless required by law for interoperability, is prohibited.
+
+The information contained herein is subject to change without notice and is not warranted to be error-free. If you find any errors, please report them to us in writing.
+
+If this is software or related documentation that is delivered to the U.S. Government or anyone licensing it on behalf of the U.S. Government, the following notice is applicable:
+
+U.S. GOVERNMENT END USERS: Oracle programs, including any operating system, integrated software, any programs installed on the hardware, and/or documentation, delivered to U.S. Government end users are "commercial computer software" pursuant to the applicable Federal Acquisition Regulation and agency-specific supplemental regulations. As such, use, duplication, disclosure, modification, and adaptation of the programs, including any operating system, integrated software, any programs installed on the hardware, and/or documentation, shall be subject to license terms and license restrictions applicable to the programs. No other rights are granted to the U.S. Government.
+
+This software or hardware is developed for general use in a variety of information management applications. It is not developed or intended for use in any inherently dangerous applications, including applications that may create a risk of personal injury. If you use this software or hardware in dangerous applications, then you shall be responsible to take all appropriate fail-safe, backup, redundancy, and other measures to ensure its safe use. Oracle Corporation and its affiliates disclaim any liability for any damages caused by use of this software or hardware in dangerous applications.
+
+Oracle and Java are registered trademarks of Oracle and/or its affiliates. Other names may be trademarks of their respective owners.
+
+Intel and Intel Xeon are trademarks or registered trademarks of Intel Corporation. All SPARC trademarks are used under license and are trademarks or registered trademarks of SPARC International, Inc. AMD, Opteron, the AMD logo, and the AMD Opteron logo are trademarks or registered trademarks of Advanced Micro Devices. UNIX is a registered trademark licensed through X/Open Company, Ltd.
+
+This software or hardware and documentation may provide access to or information about content, products, and services from third parties. Oracle Corporation and its affiliates are not responsible for and expressly disclaim all warranties of any kind with respect to third-party content, products, and services unless otherwise set forth in an applicable agreement between you and Oracle. Oracle Corporation and its affiliates will not be responsible for any loss, costs, or damages incurred due to your access to or use of third-party content, products, or services, except as set forth in an applicable agreement between you and Oracle.
+
+Copyright © 2019, Oracle and/or its affiliates. All rights reserved.

@@ -1,0 +1,1 @@
+nohup /apps/oracle/product/11.2/client_1/bin/expdp muhamad_d_rf_x/########@exaimcpdb01-vip.telkomsel.co.id:1521/OPDGPOS191 directory=TEMP_DGPOS dumpfile=RECHARGE_REQUEST_OLD.dmp logfile=recharge_request_old.log tables=DGPOS.RECHARGE_REQUEST_OLD &

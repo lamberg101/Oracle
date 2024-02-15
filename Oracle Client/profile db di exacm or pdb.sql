@@ -1,0 +1,9 @@
+ORACLE_HOME=/u02/app/oracle/product/12.1.0/dbhome_7; export ORACLE_HOME
+OH=/u02/app/oracle/product/12.1.0/dbhome_7; export OH
+ORACLE_UNQNAME=PRODHR; export ORACLE_UNQNAME
+ORACLE_HOSTNAME=cc011adm01vm01.id1.ocm.s7065770.oraclecloudatcustomer.com; export ORACLE_HOSTNAME
+ORACLE_BASE=/u02/app/oracle; export ORACLE_BASE
+PATH=/sbin:/bin:/usr/sbin:/usr/bin:/u02/app/oracle/product/12.1.0/dbhome_7/bin:/u02/app/oracle/product/12.1.0/dbhome_7/OPatch; export PATH
+LD_LIBRARY_PATH=/u02/app/oracle/product/12.1.0/dbhome_7/lib; export LD_LIBRARY_PATH
+TNS_ADMIN=/u02/app/oracle/product/12.1.0/dbhome_7/network/admin/PRODHR; export TNS_ADMIN
+ORACLE_SID=PRODHR2; export ORACLE_SID
